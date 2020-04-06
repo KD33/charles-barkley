@@ -17,16 +17,16 @@ async function drawChart(){
     // 5.  Draw data
     // 6.  Draw peripherals
 
-    const pointsAccessor = d => d.pts;
+    const statAccessor = (d, stat) => d[stat];
 
     const dimensions = {
         width:500,
         height:30,
         margin:{
-            top:0,
+            top:30,
             right:0,
             bottom:0,
-            left:0
+            left:50
         }
     };
 
