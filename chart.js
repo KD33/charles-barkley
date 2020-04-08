@@ -13,12 +13,10 @@ async function drawChart(){
     const dRoseStats = await d3.json("./players/Derrick-Rose.json");
 
     const yAccessor = d => d.stat;
-    const xAccessor = d => d.value;
-    const barkleyXAccessor = d => d.jamesRatio;
-    const compXAccessor = d => 1 - d.jamesRatio;
+    const barkleyXAccessor = d => d.roseRatio;
 
-    const barkleyColor = "#F72A2A";
-    const compColor = "#2AC5F7";
+    const barkleyColor = "rgba(184, 10, 30, 0.6)";
+    const compColor = "rgba(10, 114, 184, 0.6)";
     const data = [
         {stat:'MIN'},
         {stat:'FGM'},
@@ -101,16 +99,41 @@ async function drawChart(){
         .range([dimensions.height, 0])
         .round(.3);
 
+    const barkleyTip = d3.tip()
+        .offset([-10, 0])
+        .html(function(d) {
+            return formatToolTip("Barkley", d.barkley)
+            // return "<strong>Barkley:" + d.barkley + "</strong>";
+        })
+
+    const compTip = d3.tip()
+        .offset([-10, 0])
+        .html(function(d){
+            return "<strong>Rose:" + d.rose + "</strong>";
+        })
+
+    wrapper.call(barkleyTip);
+    wrapper.call(compTip);
+
     const bars = bounds.selectAll("bar")
         .data(data)
         .enter()
-        .append("g")
-        .append("rect")
+        .append("g");
+
+    bars.append("rect")
         .attr("x", 0)
         .attr("y", d => yScale(yAccessor(d)))
         .attr("height", 30)
         .attr("width", d => xScale(barkleyXAccessor(d)))
         .attr("fill", barkleyColor)
+        .on('mouseover', function(d){
+            d3.select(this).attr("fill", "#b80a1e");
+            barkleyTip.show(d);
+        })
+        .on('mouseout', function(){
+            d3.select(this).attr("fill", barkleyColor)
+            barkleyTip.hide();
+        })
 
     bars.append("rect")
         .attr("x", d => xScale(barkleyXAccessor(d)))
@@ -118,19 +141,23 @@ async function drawChart(){
         .attr("width", d => dimensions.boundedWidth - xScale(barkleyXAccessor(d)))
         .attr("height", 30)
         .attr("fill", compColor)
+        .on('mouseover', function(d){
+            compTip.show(d);
+            d3.select(this).attr("fill", "#0a72b8");
+        })
+        .on('mouseout', function(){
+            compTip.hide();
+            d3.select(this).attr("fill", compColor);
+        })
 
-    console.log(barkleyXAccessor(data[0]))
-    console.log(xScale(barkleyXAccessor(data[0])))
-    console.log(dimensions.width - xScale(barkleyXAccessor(data[0])))
-    console.log(dimensions.width - xScale(barkleyXAccessor(data[0])) + xScale(barkleyXAccessor(data[0])))
-
-
-
+    bars.append("line")
+        .style("stroke", "black")
+        .attr("x1", dimensions.width/2 )
+        .attr("y1", dimensions.height)
+        .attr("x2", dimensions.width/2)
+        .attr("y2", 0)
 
     bounds.call(d3.axisLeft(yScale).tickSize(0));
-
-
-
 
 }
 
