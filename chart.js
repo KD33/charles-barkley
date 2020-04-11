@@ -8,16 +8,16 @@ async function drawChart(){
     // 7.
 
     const barkleyStats = await d3.json("./players/Charles-Barkley.json");
-    const stephStats = await d3.json("./players/Stephen Curry.json");
-    const lebronStats = await d3.json("./players/Lebron-James.json");
-    const dRoseStats = await d3.json("./players/Derrick-Rose.json");
+    const curryStats = await d3.json("./players/Stephen Curry.json");
+    const jamesStats = await d3.json("./players/Lebron-James.json");
+    const roseStats = await d3.json("./players/Derrick-Rose.json");
 
     const yAccessor = d => d.stat;
-    const barkleyXAccessor = d => d.roseRatio;
+    const barkleyXAccessor = d => d.ratio;
 
     const barkleyColor = "rgba(184, 10, 30, 0.6)";
     const compColor = "rgba(10, 114, 184, 0.6)";
-    const data = [
+    const curryData = [
         {stat:'MIN'},
         {stat:'FGM'},
         {stat:'FGA'},
@@ -36,34 +36,58 @@ async function drawChart(){
         {stat:'PTS'}
     ]
 
-    data.forEach(stat => stat.value = 1);
-    data.forEach(statCategory => {
-        const key = statCategory.stat
-            .toLowerCase()
-            .split(" ")
-            .join("")
-            .replace("%", "Pct");
+    const jamesData = [
+        {stat:'MIN'},
+        {stat:'FGM'},
+        {stat:'FGA'},
+        {stat:'FG %'},
+        {stat:'FG 3M'},
+        {stat:'FG 3A'},
+        {stat:'FG 3%'},
+        {stat:'FTM'},
+        {stat:'FTA'},
+        {stat:'FT %'},
+        {stat:'REB'},
+        {stat:'AST'},
+        {stat:'STL'},
+        {stat:'BLK'},
+        {stat:'TOV'},
+        {stat:'PTS'}
+    ]
 
-        statCategory['barkley'] = barkleyStats[key];
+    const roseData = [
+        {stat:'MIN'},
+        {stat:'FGM'},
+        {stat:'FGA'},
+        {stat:'FG %'},
+        {stat:'FG 3M'},
+        {stat:'FG 3A'},
+        {stat:'FG 3%'},
+        {stat:'FTM'},
+        {stat:'FTA'},
+        {stat:'FT %'},
+        {stat:'REB'},
+        {stat:'AST'},
+        {stat:'STL'},
+        {stat:'BLK'},
+        {stat:'TOV'},
+        {stat:'PTS'}
+    ]
 
-        statCategory['curry'] = stephStats[key];
-        statCategory['curryRatio'] =
-            (statCategory['barkley']/(statCategory['barkley'] + statCategory['curry']));
+    const curryComp = populateComps(curryData, curryStats, barkleyStats, "Stephen Curry");
+    const jamesComp = populateComps(jamesData, jamesStats, barkleyStats, "Lebron James");
+    const roseComp = populateComps(roseData, roseStats, barkleyStats, "Derrick Rose");
 
-        statCategory['rose'] = dRoseStats[key];
-        statCategory['roseRatio'] =
-            (statCategory['barkley']/(statCategory['barkley'] + statCategory['rose']));
+    const comps = [
+        curryComp,
+        jamesComp,
+        roseComp
+    ]
+    const current = curryComp;
 
-        statCategory['james'] = lebronStats[key];
-        statCategory['jamesRatio'] =
-            (statCategory['barkley']/(statCategory['barkley'] + statCategory['james']));
-
-    });
-
-    console.log(data)
     const dimensions = {
-        width:1200,
-        height:700,
+        width:900,
+        height:500,
         margin:{
             top:30,
             right:0,
@@ -91,32 +115,31 @@ async function drawChart(){
         }px)`);
 
     const xScale = d3.scaleLinear()
-        .domain([0, d3.max(data.map(o => o.value))])
+        .domain([0, 1])
         .range([0, dimensions.boundedWidth]);
 
     const yScale = d3.scaleBand()
-        .domain(data.map(stat => stat.stat))
-        .range([dimensions.height, 0])
+        .domain(current.map(stat => stat.stat))
+        .range([dimensions.height - dimensions.margin.top - dimensions.margin.bottom, 0])
         .round(.3);
 
     const barkleyTip = d3.tip()
         .offset([-10, 0])
         .html(function(d) {
-            return formatToolTip("Barkley", d.barkley)
-            // return "<strong>Barkley:" + d.barkley + "</strong>";
+            return formatToolTip("Charles Barkley", d.stat, d.barkleyValue)
         })
 
     const compTip = d3.tip()
         .offset([-10, 0])
         .html(function(d){
-            return "<strong>Rose:" + d.rose + "</strong>";
+            return formatToolTip(d.playerComp, d.stat, d.compValue)
         })
 
     wrapper.call(barkleyTip);
     wrapper.call(compTip);
 
     const bars = bounds.selectAll("bar")
-        .data(data)
+        .data(comps[comps.length-1])
         .enter()
         .append("g");
 
@@ -134,6 +157,7 @@ async function drawChart(){
             d3.select(this).attr("fill", barkleyColor)
             barkleyTip.hide();
         })
+
 
     bars.append("rect")
         .attr("x", d => xScale(barkleyXAccessor(d)))
@@ -159,6 +183,41 @@ async function drawChart(){
 
     bounds.call(d3.axisLeft(yScale).tickSize(0));
 
+    d3.select("body").append("button")
+        .text("Next")
+        .on("click", function(e,f,g){
+            console.log({e, f, g})
+            const prev = comps.pop();
+            comps.unshift(prev);
+
+            bars.selectAll("bar")
+                .data(comps[comps.length-1])
+            bars.exit().remove();
+            bars.enter().append("rect");
+
+            console.log(bars)
+
+        })
+}
+
+//http://bl.ocks.org/alansmithy/e984477a741bc56db5a5
+
+function populateComps(playerArray, playerData, barkleyData, playerName) {
+    const formattedPlayerArray = playerArray.map(statCategory => {
+        statCategory.length = 1;
+        statCategory.playerComp = playerName;
+        const key = statCategory.stat
+            .toLowerCase()
+            .split(" ")
+            .join("")
+            .replace("%", "Pct");
+
+        statCategory.ratio = (barkleyData[key] / (playerData[key] + barkleyData[key]));
+        statCategory.barkleyValue = barkleyData[key];
+        statCategory.compValue = playerData[key];
+        return statCategory;
+    })
+    return formattedPlayerArray;
 }
 
 drawChart();
