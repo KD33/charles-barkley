@@ -141,7 +141,8 @@ async function drawChart(){
     const bars = bounds.selectAll("rect")
         .data(comps[comps.length-1])
         .enter()
-        // .append("g");
+        .append("g")
+        .attr('class', 'comparisonBarGroup');
 
     bars.append("rect")
         .attr("x", 0)
@@ -191,53 +192,53 @@ async function drawChart(){
             const prev = comps.pop();
             comps.unshift(prev);
 
-            let newBars = bounds.selectAll("rect");
+            let newBars = bounds.selectAll(".comparisonBarGroup");
 
-            newBars = newBars.data(comps[comps.length-1]);
-            const enterBars = newBars.enter();
+            newBars = newBars.data(comps[comps.length-1], d => d);
+            let enterBars = newBars.enter();
             //
             const exitBars = newBars.exit().remove();
             console.log(newBars)
-            console.log(enterBars)
-            console.log(exitBars)
             //
             // //THE TRICK HAS SOMETHING TO DO WITH THIS MERGE.  READ UP ON THIS MERGE!!!!!
             // //https://observablehq.com/@d3/general-update-pattern
             // //https://observablehq.com/@d3/selection-join
             // //https://github.com/d3/d3-selection#selection_data
             //
-            // enterBars.append("rect").merge(newBars)
-            //     .attr("x", 0)
-            //     .attr("y", d => yScale(yAccessor(d)))
-            //     .attr("height", 30)
-            //     .attr("width", d => xScale(barkleyXAccessor(d)))
-            //     .attr("fill", barkleyColor)
-            //     .on('mouseover', function(d){
-            //         d3.select(this).attr("fill", "#b80a1e");
-            //         barkleyTip.show(d);
-            //     })
-            //     .on('mouseout', function(){
-            //         d3.select(this).attr("fill", barkleyColor)
-            //         barkleyTip.hide();
-            //     })
+            enterBars = enterBars.append("g")
+                .attr('class', 'comparisonBarGroup')
 
-            // enterBars.append("rect").merge(newBars)
-            //     .attr("x", d => xScale(barkleyXAccessor(d)))
-            //     .attr("y", d => yScale(yAccessor(d)))
-            //     .attr("width", d => dimensions.boundedWidth - xScale(barkleyXAccessor(d)))
-            //     .attr("height", 30)
-            //     .attr("fill", compColor)
-            //     .on('mouseover', function(d){
-            //         compTip.show(d);
-            //         d3.select(this).attr("fill", "#0a72b8");
-            //     })
-            //     .on('mouseout', function(){
-            //         compTip.hide();
-            //         d3.select(this).attr("fill", compColor);
-            //     })
+            enterBars
+                .append("rect")
+                .attr("x", 0)
+                .attr("y", d => yScale(yAccessor(d)))
+                .attr("height", 30)
+                .attr("width", d => xScale(barkleyXAccessor(d)))
+                .attr("fill", barkleyColor)
+                .on('mouseover', function(d){
+                    d3.select(this).attr("fill", "#b80a1e");
+                    barkleyTip.show(d);
+                })
+                .on('mouseout', function(){
+                    d3.select(this).attr("fill", barkleyColor)
+                    barkleyTip.hide();
+                })
 
-
-
+            enterBars
+                .append("rect")
+                .attr("x", d => xScale(barkleyXAccessor(d)))
+                .attr("y", d => yScale(yAccessor(d)))
+                .attr("width", d => dimensions.boundedWidth - xScale(barkleyXAccessor(d)))
+                .attr("height", 30)
+                .attr("fill", compColor)
+                .on('mouseover', function(d){
+                    compTip.show(d);
+                    d3.select(this).attr("fill", "#0a72b8");
+                })
+                .on('mouseout', function(){
+                    compTip.hide();
+                    d3.select(this).attr("fill", compColor);
+                })
         })
 }
 
