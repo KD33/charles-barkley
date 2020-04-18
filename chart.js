@@ -192,13 +192,18 @@ async function drawChart(){
             const prev = comps.pop();
             comps.unshift(prev);
 
-            let newBars = bounds.selectAll(".comparisonBarGroup");
+            console.log(comps[comps.length-1])
 
+            d3.select("#playerPicture")
+                .attr('src', `./players/${comps[comps.length-1][0].playerComp.split(' ').join('')}.png`)
+            let newBars = bounds.selectAll(".comparisonBarGroup");
             newBars = newBars.data(comps[comps.length-1], d => d);
+            //without adding a function for the data, this isn't based on change, but based on the size of the array
+            //therefore it will only update if something changes in the size of the data
+
             let enterBars = newBars.enter();
             //
             const exitBars = newBars.exit().remove();
-            console.log(newBars)
             //
             // //THE TRICK HAS SOMETHING TO DO WITH THIS MERGE.  READ UP ON THIS MERGE!!!!!
             // //https://observablehq.com/@d3/general-update-pattern
