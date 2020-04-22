@@ -11,3 +11,43 @@
     justify-content: center;
     font-family: Ubuntu;
 }
+
+.next-button {
+    background-color:#24a85d;
+    color:#fff;
+    border:0;
+    border-radius: 4px;
+    padding:20px 50px;
+    font-weight:700;
+    font-weight:700;
+    cursor:pointer;
+    outline:0;
+    position:relative;
+}
+
+.next-button:active {
+    background-color: #12542f;
+    top:5px;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sub-container {
+    width:50%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.image-container {
+    /*display: flex;*/
+    /*justify-content: center;*/
+    /*align-items: center;*/
+}
+
+.comparisonBarGroup {
+    margin-top:50px;
+}

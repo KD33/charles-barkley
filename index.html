@@ -6,11 +6,24 @@
         <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
     </head>
     <body>
-        <div>
-            <img src="./players/chuckIcon.png"/>
-            <img id="playerPicture" src="./players/Derrick Rose.png"/>
+        <div class="container">
+            <div class="sub-container">
+                <div class="image-container">
+                    <img id="chuckPicture" src="./players/chuckIcon.png"/>
+                </div>
+                <div class="image-container">
+                    <img id="playerPicture"/>
+                </div>
+            </div>
+
         </div>
-        <div id="wrapper"></div>
+        <div class="container">
+            <div id="wrapper"></div>
+        </div>
+
+        <div class="container" id="buttonContainer">
+
+        </div>
         <script src="./d3.v5.js"></script>
         <script src="./d3tip.js"></script>
         <script src="./utlity.js"></script>

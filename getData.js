@@ -22,6 +22,26 @@ const stephenCurry = {
     mvpSeason:'2015-16'
 }
 
+const giannisAntetokounmpo = {
+    playerId:'203507',
+    mvpSeason:'2018-19'
+}
+
+const russellWestbrook = {
+    playerId:'201566',
+    mvpSeason:'2016-16'
+}
+
+const jamesHarden = {
+    playerId:'201935',
+    mvpSeason:'2017-18'
+}
+
+const kobeBryant = {
+    playerId:'977',
+    mvpSeason:'2007-08'
+}
+
 
 //const generateQueryLink = player => `https://stats.nba.com/stats/playergamelog?PlayerID=${player.playerId}&Season=${player.season}&SeasonType=Regular Season`;
 
@@ -49,12 +69,20 @@ const sendQuery = () => {
     const roseQueryLink = generateQueryLink(derrickRose);
     const jamesQueryLink = generateQueryLink(lebronJames);
     const curryQueryLink = generateQueryLink(stephenCurry);
+    const kobeQueryLink = generateQueryLink(kobeBryant);
+    const hardenQueryLink = generateQueryLink(jamesHarden);
+    const westbrookQueryLink = generateQueryLink(russellWestbrook);
+    const giannisQueryLink = generateQueryLink(giannisAntetokounmpo);
 
     Promise.all([
         makeQuery(barkleyQueryLink),
         makeQuery(roseQueryLink),
         makeQuery(jamesQueryLink),
-        makeQuery(curryQueryLink)
+        makeQuery(curryQueryLink),
+        makeQuery(kobeQueryLink),
+        makeQuery(hardenQueryLink),
+        makeQuery(westbrookQueryLink),
+        makeQuery(giannisQueryLink)
     ])
         .then(values => values.map(value => value.json()))
         .then(values => Promise.all(values))
@@ -75,6 +103,10 @@ const getMvpSeasonData = seasons => {
     if (playerId === 201565) mvpSeason = derrickRose['mvpSeason'];
     if (playerId === 2544) mvpSeason = lebronJames['mvpSeason'];
     if (playerId === 201939) mvpSeason = stephenCurry['mvpSeason'];
+    if (playerId === 203507) mvpSeason = giannisAntetokounmpo['mvpSeason'];
+    if (playerId === 201566) mvpSeason = russellWestbrook['mvpSeason'];
+    if (playerId === 201935) mvpSeason = jamesHarden['mvpSeason'];
+    if (playerId === 977) mvpSeason = kobeBryant['mvpSeason'];
 
     seasons['resultSets'][0]['rowSet'].forEach((season, i) => {
         if (season[1] === mvpSeason) {
@@ -118,11 +150,18 @@ const formatMvpSeasonData = mvpSeasonData => {
 
 
 const writeToFile = playerData => {
-    let name;
-    playerData['playerId'] === 787 ? name = 'Charles-Barkley.json' : null;
-    playerData['playerId'] === 201565 ? name = 'Derrick-Rose.json' : null;
-    playerData['playerId'] === 2544 ? name = 'Lebron-James.json' : null;
-    playerData['playerId'] === 201939 ? name = 'Stephen Curry.json' : null;
+    const idToNameMapping = {
+        '787': 'Charles-Barkley.json',
+        '201565': 'Derrick-Rose.json',
+        '2544':'Lebron-James.json',
+        '201939':'Stephen-Curry.json',
+        '203507':'Giannis-Antetokounmpo.json',
+        '201566':'Russell-Westbrook.json',
+        '201935':'James-Harden.json',
+        '977':'Kobe-Bryant.json'
+    }
+
+    const name = idToNameMapping[playerData['playerId']];
 
     fs.writeFileSync('./players/' + name, JSON.stringify(playerData))
 

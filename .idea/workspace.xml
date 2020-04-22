@@ -4,10 +4,12 @@
     <list default="true" id="d72ee87f-157f-4bd9-b973-99b345da7754" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chart.js" beforeDir="false" afterPath="$PROJECT_DIR$/chart.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/getData.js" beforeDir="false" afterPath="$PROJECT_DIR$/getData.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/players/curryIcon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/players/lebronIcon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/players/roseICon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/players/Charles-Barkley.json" beforeDir="false" afterPath="$PROJECT_DIR$/players/Charles-Barkley.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/players/Derrick-Rose.json" beforeDir="false" afterPath="$PROJECT_DIR$/players/Derrick-Rose.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/players/Lebron-James.json" beforeDir="false" afterPath="$PROJECT_DIR$/players/Lebron-James.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +35,7 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Books/FullStackD3/fullstack-d3-advanced-code/04-animations-and-transitions/3-draw-bars-with-d3-transition/updating-bars--completed.js" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Books/FullStackD3/fullstack-d3-advanced-code/03-making-a-bar-chart/draft/draw-bars.js" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
   </component>
@@ -54,6 +56,11 @@
       <workItem from="1586831633322" duration="8616000" />
       <workItem from="1587214624802" duration="1214000" />
       <workItem from="1587221324867" duration="3578000" />
+      <workItem from="1587323614860" duration="12308000" />
+      <workItem from="1587436459359" duration="4644000" />
+      <workItem from="1587518587357" duration="561000" />
+      <workItem from="1587519455455" duration="5090000" />
+      <workItem from="1587558912748" duration="7344000" />
     </task>
     <servers />
   </component>
@@ -61,9 +68,9 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="1205" y="285" key="FileChooserDialogImpl" timestamp="1586836161681">
+    <state x="1205" y="285" key="FileChooserDialogImpl" timestamp="1587519127598">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="1205" y="285" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1586836161681" />
+    <state x="1205" y="285" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1587519127598" />
   </component>
 </project>
